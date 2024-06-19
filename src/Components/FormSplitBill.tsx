@@ -8,17 +8,30 @@ interface listprop {
   balance: number;
 }
 
-function FormSplitBill({ selectedFrnd }: { selectedFrnd: listprop }) {
+function FormSplitBill({
+  selectedFrnd,
+  onSplit,
+}: {
+  selectedFrnd: listprop;
+  onSplit: (value: any) => void;
+}) {
   const [bill, setBill] = useState<number>(0);
   const [userMoney, setUserMoney] = useState<number>(0);
+  const frndExp = bill ? bill - userMoney : "";
   const [whoIsPaying, setwhoIsPaying] = useState("user");
 
   //console.log(bill, userMoney, select);
 
-  const frndExp = bill ? bill - userMoney : "";
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!bill && !userMoney) {
+      return;
+    }
+    onSplit(whoIsPaying === "user" ? frndExp : -userMoney);
+  };
 
   return (
-    <form className="form-split-bill">
+    <form className="form-split-bill" onSubmit={handleSubmit}>
       <h2>split a bill with {selectedFrnd.name}</h2>
       <label>💰Bill Value</label>
       <input
