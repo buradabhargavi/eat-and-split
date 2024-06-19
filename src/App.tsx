@@ -78,7 +78,11 @@ function App() {
       </div>
 
       {selectedFrnd && (
-        <FormSplitBill selectedFrnd={selectedFrnd} onSplit={HandleSplit} />
+        <FormSplitBill
+          selectedFrnd={selectedFrnd}
+          key={selectedFrnd.id}
+          onSplit={HandleSplit}
+        />
       )}
     </div>
   );
