@@ -35,27 +35,37 @@ interface listprop {
 function App() {
   const [friends, setFriends] = useState(initialFriends);
   const [showAddFrnd, setShowAddFrnd] = useState(false);
+  const [selectedFrnd, setSelectedFrnd] = useState<listprop | null>(null);
 
   const handleAdd = (newFrnd: listprop) => {
     setFriends((friends) => [...friends, newFrnd]);
     setShowAddFrnd(false);
   };
+  const handleSelect = (friend: listprop) => {
+    setSelectedFrnd((curr) => (curr?.id === friend.id ? null : friend));
+    setShowAddFrnd(false);
+    //console.log(friend);
+  };
+  const handleButton = () => {
+    setShowAddFrnd((prev) => !prev);
+    setSelectedFrnd(null);
+  };
 
   return (
     <div className="app">
       <div className="sidebar">
-        <FrndsList list={friends} />
+        <FrndsList
+          list={friends}
+          onSelect={handleSelect}
+          selectedFrnd={selectedFrnd}
+        />
         {showAddFrnd && <Addfrnd handleAdd={handleAdd}></Addfrnd>}
-        <Button
-          onClick={() => {
-            setShowAddFrnd((prev) => !prev);
-          }}
-        >
+        <Button onClick={handleButton}>
           {showAddFrnd ? "close" : "Add Friend"}
         </Button>
       </div>
 
-      <FormSplitBill />
+      {selectedFrnd && <FormSplitBill selectedFrnd={selectedFrnd} />}
     </div>
   );
 }

@@ -7,8 +7,13 @@ interface frndprops {
   image: string;
   balance: number;
 }
-function Friend({ details }: { details: frndprops }) {
-  const isSelected = true;
+interface props {
+  details: frndprops;
+  onSelect: (friend: frndprops) => void;
+  selectedFrnd: frndprops | null;
+}
+function Friend({ details, onSelect, selectedFrnd }: props) {
+  const isSelected = selectedFrnd === details;
   return (
     <li className={isSelected ? "selected" : ""}>
       <img src={details.image} alt="user"></img>
@@ -25,7 +30,9 @@ function Friend({ details }: { details: frndprops }) {
           you {details.name} owes you ${Math.abs(details.balance)}
         </p>
       )}
-      <Button> Select</Button>
+      <Button onClick={() => onSelect(details)}>
+        {isSelected ? "Close" : "Select"}
+      </Button>
     </li>
   );
 }
