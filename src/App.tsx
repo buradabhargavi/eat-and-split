@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import FrndsList from "./Components/FrndsList";
 import "./index.css";
 import Addfrnd from "./Components/Addfrnd";
 import FormSplitBill from "./Components/FormSplitBill";
+import Button from "./Components/Button";
+
 const initialFriends = [
   {
     id: 118836,
@@ -23,13 +25,34 @@ const initialFriends = [
     balance: 0,
   },
 ];
+interface listprop {
+  id: number;
+  name: string;
+  image: string;
+  balance: number;
+}
 
 function App() {
+  const [friends, setFriends] = useState(initialFriends);
+  const [showAddFrnd, setShowAddFrnd] = useState(false);
+
+  const handleAdd = (newFrnd: listprop) => {
+    setFriends((friends) => [...friends, newFrnd]);
+    setShowAddFrnd(false);
+  };
+
   return (
     <div className="app">
       <div className="sidebar">
-        <FrndsList list={initialFriends} />
-        <Addfrnd></Addfrnd>
+        <FrndsList list={friends} />
+        {showAddFrnd && <Addfrnd handleAdd={handleAdd}></Addfrnd>}
+        <Button
+          onClick={() => {
+            setShowAddFrnd((prev) => !prev);
+          }}
+        >
+          {showAddFrnd ? "close" : "Add Friend"}
+        </Button>
       </div>
 
       <FormSplitBill />

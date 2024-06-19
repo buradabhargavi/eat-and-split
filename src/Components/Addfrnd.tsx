@@ -1,12 +1,19 @@
 import React, { useState } from "react";
 import Button from "./Button";
 
-function Addfrnd() {
+function Addfrnd({ handleAdd }: any) {
   const [name, setName] = useState("");
-  const [url, seturl] = useState("");
+  const [url, seturl] = useState("https://i.pravatar.cc/48");
 
-  const handleSubmit = () => {
-    console.log(name, url);
+  const handleSubmit = (e: any) => {
+    const id = crypto.randomUUID();
+    if (!name || !url) return;
+    e.preventDefault();
+    const newFrnd = { name, image: `${url}?=${id}`, balance: 0, id };
+    handleAdd(newFrnd);
+
+    setName("");
+    seturl("https://i.pravatar.cc/48");
   };
 
   return (
